@@ -1,10 +1,17 @@
 {
 	"name": "cogear-plugin-blog",
-	"description": "",
+	"description": "Blog plugin for Cogear.JS",
 	"version": "1.0.0",
-	"author": "",
-	"repository": "",
-  "homepage": "",
+	"author": "Dmitriy Beliaev<admin@cogearjs.org>",
+	"repository": "https://github.com/codemotion/cogear-plugin-blog",
+	"homepage": "https://github.com/codemotion/cogear-plugin-blog",
+	"tags": [
+		"Cogear.JS",
+		"static site",
+		"blog",
+		"generator",
+		"plugin"
+	],
   "license": "MIT",
 	"main": "./plugin.js"
 }

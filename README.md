@@ -1,6 +1,13 @@
-# Cogear.JS plugin **blog**
+# **Blog** plugin for Cogear.JS
 
-About this plugin.
+[Features](#features) | [Installation](#installation) | [Usage](#usage) | [Post](#post) | [Layouts](#layouts) | [Pagination](#pagination)
+
+Example: [https://cogearjs.org/blog](https://cogearjs.org/blog)
+
+# Features
+* Data stored in flat files (as pages)
+* Pagination
+* Tags
 
 # Installation
 
@@ -15,8 +22,81 @@ Plugin will loads up automatically.
 
 # Usage
 
-Describe plugin usage.
+By default it creates virtual `blog` page (uri `/blog`) and passed all the posts in `./src/pages/blog` (can be customized) folder while rendering layout of `blog` page (also named the same).
+
+Layout `blog` must be created in `./src/layouts` or using theme layouts. 
+
+Variables passed to this layout:
+* `posts` – list of posts<br>Typical **Cogear.JS** [pages objects]https://cogearjs.org/docs/pages)) with one exception – they have `teaser` field.
+* `paginator` - pagination data ([Read More](#pagination))
+* `tags` - all posts tags (for creating navs)
+
+# Post
+Let's take a look of typical post page.
+
+Pay attention to `tags` which are passed to `blog` instance and to splitter `===`, which bring `teaser` (before it) and full (without it) views.
+
+## Listing `./src/pages/blog/2018/08/welcome.md`
+```Markdown
+---
+title: Welcome to Cogear.JS blog!
+tags: 
+ - news
+---
+
+We are happy to introduce **Cogear.JS** – modern static websites generator. 
+It's written in [Node.JS](https://nodejs.org) and powered by the latest [Webpack](https://wepback.js.org).
+
+Read [the docs](/docs) to understand how the system works.
+
+[Cogear.JS](https://cogearjs.org/images/cogearjs.jpg)]
+
+As you can see it's even suitable for blogging! Every blog post can have comments via modern services like [Disqus](https://disqus.com). Posts can also be tagged.
+
+All blog pages are built automatically and rebuilt when proper content pages are changed, added or deleted.
+
+===
+
+> Posts can even have teaser which is splitted from main content by 3 and more `=`,`:`,`_`,`--` symbol (new line only).
+
+To create a blog on your site, please install [`cogear-plugin-blog`](https://github.com/codemotion/cogear-plugin-blog) npm package and follow the instructions in `README.md` file.
+
+We really appreciate your attention, so it will be great if you write a comment.
+```
+# Layouts
+
+All the layouts can be found at `./layouts` folder of this repository.
+
+Copy them to `./src/layouts` or to a theme `layouts` folder, style it and use.
+
+# Generated pages
+
+Plugin generates the following pages:
+* `blog` – index blog page
+* `blog/[page-num]` – pagination for index page
+* `blog/tag/[tag]` – tag index page
+* `blog/tag/[tag]/[page-num]` – pagination for tag index page
+
+# Pagination
+
+Pagination object passed to layout has the following properties:
+* `count` - total blog posts count
+* `total` - total pages number
+* `current` - current page
+* `next` - next page link
+* `prev` - prev page link
+
+# Behavior
+
+When post is changed, add or deleted all connected blog pages will be regenereated automatically and browser window will be refreshed.
+
+# TODO
+It's a bit nightmare to test async operations manually, because of error handling.
+But I've do my best 🔥
+
+* Automated testing…
 
 # Docs
+How to create your own plugin?
 
-More info: [https://cogearjs.org/docs/plugins](https://cogearjs.org/docs/plugins).
+Read the docs: [https://cogearjs.org/docs/plugins](https://cogearjs.org/docs/plugins).
