@@ -29,7 +29,7 @@ By default it creates virtual `blog` page (uri `/blog`) and passed all the posts
 Layout `blog` must be created in `./src/layouts` or using theme layouts. 
 
 Variables passed to this layout:
-* `posts` – list of posts<br>Typical **Cogear.JS** [pages objects]https://cogearjs.org/docs/pages)) with one exception – they have `teaser` field.
+* `posts` – list of posts<br>Typical **Cogear.JS** [pages objects](https://cogearjs.org/docs/pages)) with one exception – they have `teaser` field.
 * `paginator` - pagination data ([Read More](#pagination))
 * `tags` - all posts tags (for creating navs)
 
@@ -91,6 +91,36 @@ Pagination object passed to layout has the following properties:
 # Behavior
 
 When post is changed, add or deleted all connected blog pages will be regenereated automatically and browser window will be refreshed.
+
+# Config
+
+If you wanna configure plugin, add `blog` section to `./config.yaml`:
+
+```yaml
+blog:
+	regex:
+		posts: ^blog\/(?!tag).+ # Pages are feeded to blog page, tags pages and paginator
+	  split: '\<p\>[:=_-]{3,}\<\/p\>' # Regex to split teaser and full view, for PARSED content in html		
+```
+
+You may change `blog.regex.posts` expression to serve `posts` from another folder.
+
+To change `split` symbol which divides post into `teaser` and full view, set up new `blog.regex.split` expression.
+
+### How to make post author name and avatar?
+With ease. Use `pages` config param to pass all posts sitting on `blog` uri needed params:
+```yaml
+pages:
+  ^blog:
+    layout: blog
+    js:
+      - js/blog.js
+    author: 
+      name: Dmitry Beliaev
+      github: https://github.com/codemotion
+```
+
+As you see custom webpack [entry point](https://cogearjs.org/docs/pages) `js/blog.js` was also added to customize scripts and styles.
 
 # TODO
 It's a bit nightmare to test async operations manually, because of error handling.
