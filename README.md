@@ -4,6 +4,8 @@
 
 Example: [https://cogearjs.org/blog](https://cogearjs.org/blog)
 
+![Cogear.JS blog plugin in action](https://i.imgur.com/zhLts4el.jpg)
+
 # Features
 * Data stored in flat files (as pages)
 * Pagination
