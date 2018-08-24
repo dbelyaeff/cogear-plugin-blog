@@ -98,9 +98,9 @@ If you wanna configure plugin, add `blog` section to `./config.yaml`:
 
 ```yaml
 blog:
-	regex:
-		posts: ^blog\/(?!tag).+ # Pages are feeded to blog page, tags pages and paginator
-	  split: '\<p\>[:=_-]{3,}\<\/p\>' # Regex to split teaser and full view, for PARSED content in html		
+ regex:
+  posts: ^blog\/(?!tag).+ # Pages are feeded to blog page, tags pages and paginator
+  split: '\<p\>[:=_-]{3,}\<\/p\>' # Regex to split teaser and full view, for PARSED content in html		
 ```
 
 You may change `blog.regex.posts` expression to serve `posts` from another folder.
