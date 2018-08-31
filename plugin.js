@@ -21,16 +21,10 @@ module.exports = {
 				posts: new RegExp(cogear.config.blog.regex.posts || '^blog\/(?!tag).+','i'),
 				split: new RegExp(cogear.config.blog.regex.cut || '\<p\>[:=_-]{3,}\<\/p\>','img')
 			}
-
-			let result = await cogear.emit('preload.page',[null,{
-				// title: 'Blog',
-				content: '',
-				file: 'blog.md',
-				uri: 'blog',
-				layout: 'blog'
-			}])
-			this.pages = {
-				"": result.shift()
+			this.pages = {}
+			// If no existing index page is configured, create one with 'blog' uri
+			if(typeof cogear.config.blog.index !== 'string'){
+				await this.setIndexPage()
 			}
 		},
 		apply(){
@@ -43,7 +37,7 @@ module.exports = {
 			cogear.on('build.page.layout',async ([page])=>{
 				// If it's a blog page - do not render it # Will cause failure without `posts` variable (will set later)
 				if(this.regex.posts.test(page.uri)){
-					page.content = page.content.replace(this.regex.split,'') // Hide splitter ====
+					page.content = page.content.replace(this.regex.split,'<!--[cut]-->') // Hide splitter ====
 				}
 			})
 			// 3. If page changed - watcher
@@ -69,6 +63,16 @@ module.exports = {
 			// 	await this.build()
 			// })
 		},
+		async setIndexPage(){
+			let result = await cogear.emit('preload.page',[null,{
+				// title: 'Blog',
+				content: '',
+				file: 'blog.md',
+				uri: 'blog',
+				layout: 'blog'
+			}])
+			this.pages[""] = result.shift()
+		},
 		async rebuild(){
 			await this.build()
 			Object.entries(this.pages).forEach(async ([uri,page])=>{
@@ -77,6 +81,13 @@ module.exports = {
 		},
 		// Blog index build		
 		async build(){
+			if(0 == Object.keys(this).length){
+				if(Object.keys(cogear.pages).contains(cogear.config.blog.index)){
+					this.pages[""] = cogear.pages[cogear.config.blog.index]
+				} else {
+					await this.setIndexPage()
+				}
+			}
 			let blog = this.pages[""]
 			Object.keys(this.pages).forEach(key=>{
 				if(key != ""){
@@ -104,8 +115,13 @@ module.exports = {
 				.map(post=>{
 					if(typeof post.content == 'string'){
 						// Get post teaser which is splitted by ===
-						post.teaser = post.content.split(this.regex.split).shift() // Only before splitter
-						post.content = post.content.replace(this.regex.split,'') // Hide splitter ====
+						if(post.content.indexOf('<!--[cut]-->') !== -1){
+							post.teaser = post.content.split('<!--[cut]-->').shift()
+						}
+						else {
+							post.teaser = post.content.split(this.regex.split).shift() // Only before splitter
+							post.content = post.content.replace(this.regex.split,'<!--[cut]-->') // Hide splitter ===
+						}
 					}
 					return post
 				})
