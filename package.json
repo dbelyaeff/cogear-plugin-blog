@@ -13,5 +13,8 @@
 		"plugin"
 	],
 	"license": "MIT",
-	"main": "./plugin.js"
+	"main": "./plugin.js",
+	"dependencies": {
+		"webpack-merge": "^4.1.4"
+	}
 }
