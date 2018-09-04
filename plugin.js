@@ -115,7 +115,7 @@ module.exports = {
           if(typeof post.content == 'string'){
             // Get post teaser which is splitted by ===
             // if(post.content.indexOf(this.cut) !== -1){
-            post.teaser = post.content.split(this.cut).shift();
+            post.teaser = post.content.split(this.config.split).shift();
             // }
             // else {
             // 	post.teaser = post.content.split(this.regex.split).shift() // Only before splitter
