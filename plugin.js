@@ -113,14 +113,11 @@ module.exports = {
         })
         .map(post=>{
           if(typeof post.content == 'string'){
-            // Get post teaser which is splitted by ===
-            // if(post.content.indexOf(this.cut) !== -1){
-            post.teaser = post.content.split(this.config.split).shift();
-            // }
-            // else {
-            // 	post.teaser = post.content.split(this.regex.split).shift() // Only before splitter
-            // 	post.content = post.content.replace(this.regex.split,this.cut) // Hide splitter ===
-            // }
+            if(post.content.indexOf(this.config.split) !== -1){
+              post.teaser = post.content.split(this.config.split).shift();
+            } else {
+              post.teaser = post.content;
+            }
           }
           return post;
         })
@@ -130,7 +127,7 @@ module.exports = {
           // Sort in DESC order
           return aDate > bDate ? -1 : 1;
         });
-      if(!this.posts.length) return;
+      if(!this.posts.length) resolve();
       await this.buildPages(blog,this.posts);
       if(this.tags){
         await forEach(this.tags,(async(tag)=>{
