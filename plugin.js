@@ -73,6 +73,7 @@ module.exports = {
     let result = await cogear.emit('preload.page',[null,{
       // title: 'Blog',
       content: '',
+      __content: '',
       file: 'blog.md',
       uri: 'blog',
       layout: 'blog'
@@ -88,11 +89,11 @@ module.exports = {
   // Blog index build		
   async build(){
     let blog = this.pages[''];
-    Object.keys(this.pages).forEach(key=>{
-      if(key != ''){
-        delete this.pages[key];
-      }
-    });
+    // Object.keys(this.pages).forEach(key=>{
+    //   if(key != ''){
+    //     delete this.pages[key];
+    //   }
+    // });
     return new Promise(async(resolve)=>{
       this.tags = [];
       // Get posts, map and sort them
@@ -104,12 +105,15 @@ module.exports = {
           }
           return post;
         })
-        .filter(post=>{
-          let isTagPage = false;
-          this.tags.forEach(tag=>{
-            isTagPage = post.uri == path.join(blog.uri,tag);
-          }); 
-          return !isTagPage;
+        // .filter(post=>{
+        //   let isTagPage = false;
+        //   this.tags.forEach(tag=>{
+        //     isTagPage = post.uri == path.join(blog.uri,tag);
+        //   }); 
+        //   return !isTagPage;
+        // })
+        .filter(post => {
+          return !Object.keys(this.pages).includes(post.uri);
         })
         .map(post=>{
           if(typeof post.content == 'string'){
@@ -181,7 +185,7 @@ module.exports = {
         } else {
           newPage.paginator.prev = page.uri;
         }
-        newPage.content = cogear.parser.render(newPage.__content, newPage);
+        newPage.content = await cogear.parser.render(newPage.__content, newPage);
 						
         cogear.pages[newPage.uri] = newPage; 
         this.pages[newPage.uri] = newPage;
