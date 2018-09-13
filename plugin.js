@@ -157,7 +157,7 @@ module.exports = {
       count: posts.length,
       current: 1,
       perPage: this.config.perPage,
-      total: Math.round(posts.length/this.config.perPage),
+      total: Math.ceil(posts.length/this.config.perPage),
       next: null,
       prev: null,
       baseUri: page.uri,
@@ -196,6 +196,7 @@ module.exports = {
       page.paginator = paginator;
     } else {
       page.posts = posts;
+      page.paginator = {...paginator};
     }		
   }
 };
