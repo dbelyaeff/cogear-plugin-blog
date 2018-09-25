@@ -7,9 +7,6 @@ module.exports = {
     /**
 			 * Blog section in config.yaml must look like this (optional):
 			 * blog:
-			 *  regex:
-			 * 		posts: ^blog\/(?!tag).+ # Pages are feeded to blog page, tags pages and paginator
-			 *    split: '\<p\>[:=_-]{3,}\<\/p\>' # Regex to split teaser and full view, for PARSED content in html
 			 *  index: "news" # `blog` by default, virtual page. If page exists, data will be proceed to that page
 			 */
     cogear.blog = this;
@@ -18,7 +15,7 @@ module.exports = {
       regex: null,
       split: '<!--more-->',
       tagUri: 'tag',
-      perPage: 3
+      perPage: 3,
     };
     cogear.config.blog = cogear.config.blog ? merge(defaults,cogear.config.blog) : defaults;
     this.config = cogear.config.blog;
@@ -76,7 +73,6 @@ module.exports = {
       __content: '',
       file: 'blog.md',
       uri: 'blog',
-      layout: 'blog'
     }]);
     this.pages[''] = result.shift();
   },
