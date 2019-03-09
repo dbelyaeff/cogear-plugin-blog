@@ -36,7 +36,7 @@ Variables passed to this layout:
 # Post
 Let's take a look of typical post page.
 
-Pay attention to `tags` which are passed to `blog` instance and to splitter `<!--more-->`, which bring `teaser` (before it) and full (without it) views.
+Pay attention to `tags` which are passed to `blog` instance and to splitter `<!--more-->`, which brings `teaser` (before it) and full views (without it).
 
 ## Listing `./src/pages/blog/2018/08/welcome.md`
 ```Markdown
