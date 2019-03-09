@@ -36,7 +36,7 @@ Variables passed to this layout:
 # Post
 Let's take a look of typical post page.
 
-Pay attention to `tags` which are passed to `blog` instance and to splitter `===`, which bring `teaser` (before it) and full (without it) views.
+Pay attention to `tags` which are passed to `blog` instance and to splitter `<!--more-->`, which bring `teaser` (before it) and full (without it) views.
 
 ## Listing `./src/pages/blog/2018/08/welcome.md`
 ```Markdown
@@ -57,9 +57,9 @@ As you can see it's even suitable for blogging! Every blog post can have comment
 
 All blog pages are built automatically and rebuilt when proper content pages are changed, added or deleted.
 
-===
+<!--more-->
 
-> Posts can even have teaser which is splitted from main content by 3 and more `=`,`:`,`_`,`--` symbol (new line only).
+> Posts can even have teaser which is splitted from main content by `<!--more-->` symbol (new line only).
 
 To create a blog on your site, please install [`cogear-plugin-blog`](https://github.com/codemotion/cogear-plugin-blog) npm package and follow the instructions in `README.md` file.
 
@@ -100,12 +100,9 @@ If you wanna configure plugin, add `blog` section to `./config.yaml`:
 blog:
  regex:
   posts: ^blog\/(?!tag).+ # Pages are feeded to blog page, tags pages and paginator
-  split: '\<p\>[:=_-]{3,}\<\/p\>' # Regex to split teaser and full view, for PARSED content in html		
 ```
 
 You may change `blog.regex.posts` expression to serve `posts` from another folder.
-
-To change `split` symbol which divides post into `teaser` and full view, set up new `blog.regex.split` expression.
 
 ### How to make post author name and avatar?
 With ease. Use `pages` config param to pass all posts sitting on `blog` uri needed params:
