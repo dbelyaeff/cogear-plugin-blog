@@ -13,7 +13,7 @@ module.exports = {
     let defaults = {
       index: 'blog', // Means `auto`, do it for me
       regex: null,
-      split: '<!--more-->',
+      split: '===',
       tagUri: 'tag',
       perPage: 3,
     };
@@ -113,8 +113,10 @@ module.exports = {
         })
         .map(post=>{
           if(typeof post.content == 'string'){
-            if(post.content.indexOf(this.config.split) !== -1){
-              post.teaser = post.content.split(this.config.split).shift();
+            const m = new RegExp(`^(.+)${this.config.split}(.*)$`, "s").exec(post.content);
+            if(m){
+              post.teaser = m[1];
+              post.content = m[1] + m[2];
             } else {
               post.teaser = post.content;
             }
