@@ -13,7 +13,7 @@ module.exports = {
     let defaults = {
       index: 'blog', // Means `auto`, do it for me
       regex: null,
-      split: '<!--more-->',
+      split: '===',
       tagUri: 'tag',
       perPage: 3,
     };
@@ -36,21 +36,14 @@ module.exports = {
       await this.init();
       await this.build();
     });
-    // 2. Handle pages preloading
-    // cogear.on('build.page.layout',async ([page])=>{
-    // 	// If it's a blog page - do not render it # Will cause failure without `posts` variable (will set later)
-    // 	if(this.regex.test(page.uri)){
-    // 		page.content = page.content.replace(this.regex.split,this.cut) // Hide splitter ====
-    // 	}
-    // })
     // 3. If page changed - watcher
     cogear.on('watcher.change.page',async(file)=>{
-      if(this.regex.test(file)){
+      if(this.regex.test(file.substr(1))){
         await this.rebuild();
       }
     });
     cogear.on('watcher.add.page',async(file)=>{
-      if(this.regex.test(file)){
+      if(this.regex.test(file.substr(1))){
         await this.rebuild();
       }
     });
@@ -113,8 +106,10 @@ module.exports = {
         })
         .map(post=>{
           if(typeof post.content == 'string'){
-            if(post.content.indexOf(this.config.split) !== -1){
-              post.teaser = post.content.split(this.config.split).shift();
+            const m = new RegExp(`^(.+)${this.config.split}(.*)$`, "s").exec(post.content);
+            if(m){
+              post.teaser = m[1];
+              post.content = m[1] + m[2];
             } else {
               post.teaser = post.content;
             }
